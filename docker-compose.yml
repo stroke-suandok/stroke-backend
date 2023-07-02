@@ -1,0 +1,34 @@
+version: "3.8"
+name: stroke-backend
+services:
+  db:
+    image: neo4j
+    container_name: db
+    environment:
+      NEO4J_AUTH: neo4j/${DB_PASSWORD}
+      # https://github.com/neo4j/neo4j/issues/12908#issuecomment-1552406782
+      NEO4J_server_directories_run: /run
+      NEO4J_server_directories_plugins: /plugins
+      # For production, reconfigure this. https://neo4j.com/docs/apoc/5/installation/
+      NEO4J_apoc_export_file_enabled: true
+      NEO4J_apoc_import_file_enabled: true
+      NEO4J_apoc_import_file_use__neo4j__config: true
+      NEO4J_PLUGINS: \[\"apoc\"\]
+      NEO4J_dbms_security_procedures_unrestricted: "apoc.cypher.*"
+    restart: "always"
+    volumes:
+      - graphdb_vol:/data
+      # - ./conf/:/conf/'
+      - ./plugins:/plugins
+    ports:
+      - 7474:7474
+      - 7687:7687
+    networks:
+      - graphdb_net
+volumes:
+  graphdb_vol:
+    external: false
+networks:
+  graphdb_net:
+    driver: bridge
+    external: false
