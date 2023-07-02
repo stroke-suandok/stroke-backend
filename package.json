@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/client": "^3.7.16",
     "@apollo/server": "^4.7.5",
     "@as-integrations/fastify": "^2.0.0",
     "@fastify/autoload": "^5.0.0",
