@@ -19,7 +19,7 @@ services:
     volumes:
       - graphdb_vol:/data
       # - ./conf/:/conf/'
-      - ./plugins:/plugins
+      - ./neo4j_plugins:/plugins
     ports:
       - 7474:7474
       - 7687:7687
