@@ -2,12 +2,12 @@ import { FastifyPluginAsync } from 'fastify';
 
 import { client, gql } from '../../db/client';
 
-const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
+const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     fastify.get('/', async function (request, reply) {
         const result = await client.query({
             query: gql`
                 query Query {
-                    tasks {
+                    taskGroups {
                         id
                     }
                 }
@@ -19,7 +19,7 @@ const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     fastify.post('/', async function (request, reply) {
         const result = await client.mutate({
             mutation: gql`
-                mutation CreateTaskGroups($input: [TASK_GROUPCreateInput!]!) {
+                mutation Mutation($input: [TASK_GROUPCreateInput!]!) {
                     createTaskGroups(input: $input) {
                         taskGroups {
                             id
@@ -35,4 +35,4 @@ const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     });
 };
 
-export default tasks;
+export default taskgroups;
