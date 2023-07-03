@@ -38,9 +38,10 @@ export async function getTasksWithActiveStatus() {
         match (task:TASK)
         optional match (taskParents:TASK)-[:NEXT]->(task:TASK)
         optional match (task:TASK)-[:NEXT]->(taskChildren:TASK)
-        with task, collect(distinct taskChildren{.*}) as groupTaskChildren, collect(distinct taskParents{.*}) as groupTaskParents, collect(taskParents.status) AS taskParentsStatusList
-        with *, reduce(isActive = true, status IN taskParentsStatusList | isActive AND (status = 'SUCCESS')) AS isActive
-        return task{.*, groupTaskChildren:groupTaskChildren, groupTaskParents:groupTaskParents, isActive: isActive AND (task.status = 'PENDING')}
+        optional match (taskParentsRequired:TASK)-[:NEXT{required: true}]->(task:TASK)
+        with task, collect(distinct taskChildren{.*}) as groupTaskChildren, collect(distinct taskParents{.*}) as groupTaskParents, collect(distinct taskParentsRequired{.*}) as groupTaskParentsRequired, collect(taskParentsRequired.status) AS taskParentsRequiredStatusList
+        with *, reduce(isActive = true, status IN taskParentsRequiredStatusList | isActive AND (status = 'SUCCESS')) AS isActive
+        return task{.*, groupTaskChildren:groupTaskChildren, groupTaskParents:groupTaskParents, isActive: isActive AND (task.status = 'PENDING'), groupTaskParentsRequired:groupTaskParentsRequired}
     `);
     await session.close();
     return data.records.map((r) => r.get('task'));
