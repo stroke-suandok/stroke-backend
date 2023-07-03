@@ -2,22 +2,39 @@ import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
 import { client, gql } from '../../db/client';
-import { CreateTasksDTO } from './schema';
+import { CreateTasksDTO, GetTasksDTO } from './schema';
 
 const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
-    server.get('/', async function (request, reply) {
-        const result = await client.query({
-            query: gql`
-                query Query {
-                    tasks {
-                        id
+    server.get(
+        '/',
+        {
+            schema: {
+                querystring: GetTasksDTO,
+            },
+        },
+        async function (request, reply) {
+            const result = await client.query({
+                query: gql`
+                    query Query($where: TASKWhere) {
+                        tasks(where: $where) {
+                            id
+                            title
+                            taskType
+                        }
                     }
-                }
-            `,
-        });
-        return { data: result.data };
-    });
+                `,
+                variables: {
+                    where: {
+                        inTaskGroup: {
+                            id: request.query.taskGroupId,
+                        },
+                    },
+                },
+            });
+            return { data: result.data };
+        },
+    );
 
     server.post(
         '/',
@@ -35,12 +52,19 @@ const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
                 `,
                 variables: {
                     input: {
-                        taskType: 'TEST_TYPE',
+                        taskType: request.body.taskType,
                         title: request.body.title,
                         inTaskGroup: {
                             connect: {
                                 where: {
                                     node: { id: request.body.taskGroupId },
+                                },
+                            },
+                        },
+                        precededBy: {
+                            connect: {
+                                where: {
+                                    node: { id: request.body.parentTaskId },
                                 },
                             },
                         },

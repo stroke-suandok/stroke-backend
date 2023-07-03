@@ -37,6 +37,14 @@ const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
                 variables: {
                     input: {
                         hn: request.body.hn,
+                        hasTasks: {
+                            create: {
+                                node: {
+                                    title: 'Fill in Pateint Info',
+                                    taskType: 'FILL_PATIENT_INFO',
+                                },
+                            },
+                        },
                     },
                 },
             });
