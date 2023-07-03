@@ -1,8 +1,22 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
+import { Static, Type } from '@sinclair/typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { client, gql } from '../../db/client';
-import { CreateTasksDTO, GetTasksDTO } from './schema';
+import { createTasks, getTasksByTaskGroupId } from './services';
+
+const GetTasksDTO = Type.Object({
+    taskGroupId: Type.String(),
+});
+type GetTasksDTO = Static<typeof GetTasksDTO>;
+
+const CreateTasksDTO = Type.Object({
+    taskGroupId: Type.String(),
+    parentTaskId: Type.String(),
+    title: Type.String(),
+    taskType: Type.String(),
+    required: Type.Boolean(),
+});
+type CreateTasksDTO = Static<typeof CreateTasksDTO>;
 
 const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -14,25 +28,8 @@ const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             },
         },
         async function (request, reply) {
-            const result = await client.query({
-                query: gql`
-                    query Query($where: TASKWhere) {
-                        tasks(where: $where) {
-                            id
-                            title
-                            taskType
-                        }
-                    }
-                `,
-                variables: {
-                    where: {
-                        inTaskGroup: {
-                            id: request.query.taskGroupId,
-                        },
-                    },
-                },
-            });
-            return { data: result.data };
+            const data = await getTasksByTaskGroupId(request.query.taskGroupId);
+            return data;
         },
     );
 
@@ -40,41 +37,14 @@ const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         '/',
         { schema: { body: CreateTasksDTO } },
         async function (request, reply) {
-            const result = await client.mutate({
-                mutation: gql`
-                    mutation Mutation($input: [TASKCreateInput!]!) {
-                        createTasks(input: $input) {
-                            tasks {
-                                id
-                            }
-                        }
-                    }
-                `,
-                variables: {
-                    input: {
-                        taskType: request.body.taskType,
-                        title: request.body.title,
-                        inTaskGroup: {
-                            connect: {
-                                where: {
-                                    node: { id: request.body.taskGroupId },
-                                },
-                            },
-                        },
-                        precededBy: {
-                            connect: {
-                                where: {
-                                    node: { id: request.body.parentTaskId },
-                                },
-                                edge: {
-                                    required: request.body.required,
-                                },
-                            },
-                        },
-                    },
-                },
+            const data = await createTasks({
+                taskType: request.body.taskType,
+                taskGroupId: request.body.taskGroupId,
+                title: request.body.title,
+                parentTaskIds: [request.body.parentTaskId],
+                requiredArr: [request.body.required],
             });
-            return { data: result.data };
+            return data;
         },
     );
 };

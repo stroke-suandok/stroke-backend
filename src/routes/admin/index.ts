@@ -1,15 +1,24 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { driver } from '../../db/server';
+import { clearData, getTasksWithActiveStatus, seedData } from './services';
 
 const admin: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
+
     server.get('/clear', async function (request, reply) {
-        const session = driver.session();
-        await session.run('MATCH (n) DETACH DELETE n');
-        await session.close();
-        return { data: 'All cleared' };
+        await clearData();
+        return 'All Cleared';
+    });
+
+    server.get('/seed', async function (request, reply) {
+        await seedData();
+        return 'Seeded';
+    });
+
+    server.get('/tasks', async function (request, reply) {
+        const data = await getTasksWithActiveStatus();
+        return data;
     });
 };
 
