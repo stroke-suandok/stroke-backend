@@ -6,6 +6,9 @@
   "directories": {
     "test": "test"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "test": "npm run build:ts && tsc -p test/tsconfig.json && tap --ts \"test/**/*.test.ts\"",
     "start": "npm run build:ts && fastify start -l info dist/app.js",
@@ -23,7 +26,9 @@
     "@as-integrations/fastify": "^2.0.0",
     "@fastify/autoload": "^5.0.0",
     "@fastify/sensible": "^5.0.0",
+    "@fastify/type-provider-typebox": "^3.2.0",
     "@neo4j/graphql": "^3.22.0",
+    "@sinclair/typebox": "^0.29.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.0.0",
     "fastify-cli": "^5.7.1",

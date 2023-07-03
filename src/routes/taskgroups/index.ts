@@ -1,14 +1,18 @@
+import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
 import { client, gql } from '../../db/client';
+import { CreateTaskGroupsDTO } from './schema';
 
 const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
-    fastify.get('/', async function (request, reply) {
+    const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
+    server.get('/', async function (request, reply) {
         const result = await client.query({
             query: gql`
                 query Query {
                     taskGroups {
                         id
+                        hn
                     }
                 }
             `,
@@ -16,23 +20,29 @@ const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         return { data: result.data };
     });
 
-    fastify.post('/', async function (request, reply) {
-        const result = await client.mutate({
-            mutation: gql`
-                mutation Mutation($input: [TASK_GROUPCreateInput!]!) {
-                    createTaskGroups(input: $input) {
-                        taskGroups {
-                            id
+    server.post(
+        '/',
+        { schema: { body: CreateTaskGroupsDTO } },
+        async function (request, reply) {
+            const result = await client.mutate({
+                mutation: gql`
+                    mutation Mutation($input: [TASK_GROUPCreateInput!]!) {
+                        createTaskGroups(input: $input) {
+                            taskGroups {
+                                id
+                            }
                         }
                     }
-                }
-            `,
-            variables: {
-                input: {},
-            },
-        });
-        return { data: result.data };
-    });
+                `,
+                variables: {
+                    input: {
+                        hn: request.body.hn,
+                    },
+                },
+            });
+            return { data: result.data };
+        },
+    );
 };
 
 export default taskgroups;
