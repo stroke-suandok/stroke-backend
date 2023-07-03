@@ -66,6 +66,9 @@ const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
                                 where: {
                                     node: { id: request.body.parentTaskId },
                                 },
+                                edge: {
+                                    required: request.body.required,
+                                },
                             },
                         },
                     },

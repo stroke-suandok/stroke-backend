@@ -23,10 +23,12 @@ const app: FastifyPluginAsync<AppOptions> = async (
     // Place here your custom code!
 
     // Graphql server
+
     const apollo = new ApolloServer<BaseContext>({
         schema: await neoSchema.getSchema(),
         plugins: [fastifyApolloDrainPlugin(fastify)],
     });
+    await neoSchema.assertIndexesAndConstraints({ options: { create: true } });
     await apollo.start();
     await fastify.register(fastifyApollo(apollo));
 

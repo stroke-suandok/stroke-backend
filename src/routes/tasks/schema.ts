@@ -5,6 +5,7 @@ export const CreateTasksDTO = Type.Object({
     parentTaskId: Type.String(),
     title: Type.String(),
     taskType: Type.String(),
+    required: Type.Boolean(),
 });
 
 export const GetTasksDTO = Type.Object({
