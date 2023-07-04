@@ -1,7 +1,12 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { clearData, getTasksWithActiveStatus, seedData } from './services';
+import {
+    clearData,
+    getGraphInfo,
+    getTasksWithActiveStatus,
+    seedData,
+} from './services';
 
 const admin: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -18,6 +23,11 @@ const admin: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
     server.get('/tasks', async function (request, reply) {
         const data = await getTasksWithActiveStatus();
+        return data;
+    });
+
+    server.get('/graphs', async function (request, reply) {
+        const data = await getGraphInfo();
         return data;
     });
 };

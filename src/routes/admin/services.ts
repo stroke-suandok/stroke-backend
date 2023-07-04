@@ -1,4 +1,5 @@
 import { driver } from '../../db/server';
+import { getNodePosition } from '../../graph';
 import { createTaskGroups } from '../taskgroups/services';
 import { createTasks, getTasksByTaskGroupId } from '../tasks/services';
 import { blueprint, formatBluePrint } from './utils';
@@ -45,4 +46,23 @@ export async function getTasksWithActiveStatus() {
     `);
     await session.close();
     return data.records.map((r) => r.get('task'));
+}
+
+export async function getGraphInfo() {
+    const session = driver.session();
+    const dataTemp = await session.run(`
+        match (n:TASK)
+        match (:TASK)-[r:NEXT]->(:TASK)
+        with collect(distinct n{.*, elementId:elementId(n)}) as nodes, collect(distinct r{.*, elementId:elementId(r), source:elementId(startNode(r)), target:elementId(endNode(r))}) as edges
+        return {nodes:nodes, edges:edges}`);
+    await session.close();
+    const data = dataTemp.records.map((r) =>
+        r.get('{nodes:nodes, edges:edges}'),
+    )[0];
+
+    const nodes = data!.nodes;
+    const edges = data!.edges;
+
+    const nodesOut = getNodePosition(nodes, edges);
+    return { nodes: nodesOut, edges: edges };
 }

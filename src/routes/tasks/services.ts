@@ -50,7 +50,7 @@ export async function createTasks({
     }
     const connects = parentTaskIds.map((id, index) => ({
         id: id,
-        required: requiredArr[index] || true,
+        required: requiredArr[index],
     }));
 
     const result = await client.mutate({
