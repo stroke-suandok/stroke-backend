@@ -28,6 +28,8 @@
         "@fastify/autoload": "^5.0.0",
         "@fastify/cors": "^8.3.0",
         "@fastify/sensible": "^5.0.0",
+        "@fastify/swagger": "^8.7.0",
+        "@fastify/swagger-ui": "^1.9.2",
         "@fastify/type-provider-typebox": "^3.2.0",
         "@neo4j/graphql": "^3.22.0",
         "@sinclair/typebox": "^0.29.1",

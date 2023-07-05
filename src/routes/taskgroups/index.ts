@@ -10,12 +10,27 @@ const CreateTaskGroupsDTO = Type.Object({
 
 type CreateTaskGroupsDTO = Static<typeof CreateTaskGroupsDTO>;
 
+const GetTaskGroupDTO = Type.Object({
+    hn: Type.String(),
+    id: Type.String(),
+});
+
 const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
-    server.get('/', async function (request, reply) {
-        const data = await getTaskGroups();
-        return data;
-    });
+    server.get(
+        '/',
+        {
+            schema: {
+                response: {
+                    200: Type.Array(GetTaskGroupDTO),
+                },
+            },
+        },
+        async function (request, reply) {
+            const data = await getTaskGroups();
+            return data;
+        },
+    );
 
     server.post(
         '/',
