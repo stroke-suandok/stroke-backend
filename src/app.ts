@@ -53,11 +53,6 @@ const app: FastifyPluginAsync<AppOptions> = async (
         dir: join(__dirname, 'routes'),
         options: opts,
     });
-
-    fastify.addHook('onReady', function (done) {
-        // this.swagger();
-        done();
-    });
 };
 
 export default app;

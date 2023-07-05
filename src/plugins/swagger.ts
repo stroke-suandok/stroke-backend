@@ -35,6 +35,6 @@ export const optionsSwaggerUI: FastifySwaggerUiOptions = {
 };
 
 export default fp(async (fastify, opts) => {
-    fastify.register(fp(swagger), optionsSwagger);
-    fastify.register(fp(swaggerUI), optionsSwaggerUI);
+    fastify.register(swagger, optionsSwagger);
+    fastify.register(swaggerUI, optionsSwaggerUI);
 });
