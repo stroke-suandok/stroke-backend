@@ -25,3 +25,13 @@ declare module 'fastify' {
         verifyJWT(request: any, reply: any, done: any): Promise<void>;
     }
 }
+
+declare module '@fastify/jwt' {
+    interface FastifyJWT {
+        payload: { username: string; role: string }; // payload type is used for signing and verifying
+        user: {
+            username: string;
+            role: string;
+        }; // user type is return type of `request.user` object
+    }
+}
