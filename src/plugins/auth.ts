@@ -9,6 +9,8 @@ export default fp(async (fastify, opts) => {
     fastify.register(fastifyJWT, { secret: process.env.JWT_SECRET });
     fastify.register(fastifyAuth);
     fastify.decorate('verifyJWT', verifyJWT);
+    fastify.decorate('verifyAdmin', verifyAdmin);
+    fastify.decorate('publicRoute', publicRoute);
 });
 
 async function verifyJWT(request: any, reply: any, done: any): Promise<any> {
@@ -20,9 +22,28 @@ async function verifyJWT(request: any, reply: any, done: any): Promise<any> {
     }
 }
 
+async function publicRoute(request: any, reply: any, done: any): Promise<any> {
+    done();
+}
+
+async function verifyAdmin(request: any, reply: any, done: any): Promise<any> {
+    try {
+        await request.jwtVerify();
+    } catch (err) {
+        reply.send(err);
+    }
+    const role = request.user.role || 'GUEST';
+    if (role !== 'ADMIN') {
+        reply.code(401).send({ message: 'Unauthorized' });
+    }
+    done();
+}
+
 declare module 'fastify' {
     export interface FastifyInstance {
         verifyJWT(request: any, reply: any, done: any): Promise<void>;
+        publicRoute(request: any, reply: any, done: any): Promise<void>;
+        verifyAdmin(request: any, reply: any, done: any): Promise<void>;
     }
 }
 

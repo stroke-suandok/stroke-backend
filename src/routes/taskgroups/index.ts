@@ -16,6 +16,14 @@ const GetTaskGroupDTO = Type.Object({
 });
 
 const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
+    fastify.addHook('onRequest', async (request, reply) => {
+        try {
+            await request.jwtVerify();
+        } catch (err) {
+            reply.send(err);
+        }
+    });
+
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
     server.get(
         '/',

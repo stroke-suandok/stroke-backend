@@ -66,10 +66,10 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             if (user) {
                 const { password, ...userWithoutPassword } = user;
                 const accessToken = fastify.jwt.sign(userWithoutPassword, {
-                    expiresIn: '6s',
+                    expiresIn: '30s',
                 });
                 const refreshToken = fastify.jwt.sign(userWithoutPassword, {
-                    expiresIn: '20s',
+                    expiresIn: '5m',
                 });
                 reply.send({
                     accessToken: accessToken,
@@ -96,7 +96,7 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             const { iat, exp, ...userWithoutIatExp } = request.user;
 
             const accessToken = fastify.jwt.sign(userWithoutIatExp, {
-                expiresIn: '6s',
+                expiresIn: '30s',
             });
 
             reply.send({
@@ -109,9 +109,18 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     server.route({
         method: 'GET',
         preHandler: fastify.auth([fastify.verifyJWT]),
-        url: '/protected',
+        url: '/authenticated_route',
         handler: async (request, reply) => {
             reply.send({ message: 'You can access protected route.' });
+        },
+    });
+
+    server.route({
+        method: 'GET',
+        preHandler: fastify.auth([fastify.verifyAdmin]),
+        url: '/admin_route',
+        handler: async (request, reply) => {
+            reply.send({ message: 'You can access admin route.' });
         },
     });
 };
