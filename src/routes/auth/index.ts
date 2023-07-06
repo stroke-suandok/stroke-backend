@@ -66,10 +66,10 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             if (user) {
                 const { password, ...userWithoutPassword } = user;
                 const accessToken = fastify.jwt.sign(userWithoutPassword, {
-                    expiresIn: '1m',
+                    expiresIn: '10s',
                 });
                 const refreshToken = fastify.jwt.sign(userWithoutPassword, {
-                    expiresIn: '2m',
+                    expiresIn: '20m',
                 });
                 reply.send({
                     accessToken: accessToken,
