@@ -32,6 +32,8 @@ declare module '@fastify/jwt' {
         user: {
             username: string;
             role: string;
+            iat: number;
+            exp: number;
         }; // user type is return type of `request.user` object
     }
 }

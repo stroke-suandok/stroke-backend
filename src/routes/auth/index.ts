@@ -66,10 +66,10 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             if (user) {
                 const { password, ...userWithoutPassword } = user;
                 const accessToken = fastify.jwt.sign(userWithoutPassword, {
-                    expiresIn: '10s',
+                    expiresIn: '6s',
                 });
                 const refreshToken = fastify.jwt.sign(userWithoutPassword, {
-                    expiresIn: '20m',
+                    expiresIn: '20s',
                 });
                 reply.send({
                     accessToken: accessToken,
@@ -92,8 +92,11 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         },
         preHandler: fastify.auth([fastify.verifyJWT]),
         handler: async (request, reply) => {
-            const accessToken = fastify.jwt.sign(request.user, {
-                expiresIn: '1m',
+            // For some reason, the user object contains iat and exp fields which I need to remove.
+            const { iat, exp, ...userWithoutIatExp } = request.user;
+
+            const accessToken = fastify.jwt.sign(userWithoutIatExp, {
+                expiresIn: '6s',
             });
 
             reply.send({
@@ -108,7 +111,7 @@ const auth: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         preHandler: fastify.auth([fastify.verifyJWT]),
         url: '/protected',
         handler: async (request, reply) => {
-            reply.send({ message: 'This is a protected route' });
+            reply.send({ message: 'You can access protected route.' });
         },
     });
 };
