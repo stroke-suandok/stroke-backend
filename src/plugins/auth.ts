@@ -29,6 +29,7 @@ async function publicRoute(request: any, reply: any, done: any): Promise<any> {
 async function verifyAdmin(request: any, reply: any, done: any): Promise<any> {
     try {
         await request.jwtVerify();
+        done();
     } catch (err) {
         reply.send(err);
     }
