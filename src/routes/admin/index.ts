@@ -1,6 +1,7 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
+import { serializeSSEEvent, sseEventHandler } from '../../plugins/sse';
 import {
     clearData,
     getGraphInfo,
@@ -29,6 +30,26 @@ const admin: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     server.get('/graphs', async function (request, reply) {
         const data = await getGraphInfo();
         return data;
+    });
+
+    server.route({
+        method: 'GET',
+        url: '/sse',
+        handler: sseEventHandler,
+    });
+
+    server.route({
+        method: 'GET',
+        url: '/sse/send',
+        handler: (request, reply) => {
+            const { sseSubscribers } = server;
+            sseSubscribers.forEach((subscriber) => {
+                subscriber.reply.raw.write(
+                    serializeSSEEvent({ data: 'hello' }),
+                );
+            });
+            return 'ok';
+        },
     });
 };
 
