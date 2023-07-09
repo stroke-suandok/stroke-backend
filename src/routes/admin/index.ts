@@ -44,7 +44,7 @@ const admin: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         handler: (request, reply) => {
             const { sseSubs } = server;
             sseSubs.forEach((sub) => {
-                sub.broadcast({ data: 'hello', event: 'test' });
+                sub.broadcast({ data: 'Message from server', event: 'test' });
             });
             return 'ok';
         },
