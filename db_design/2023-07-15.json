@@ -1,0 +1,172 @@
+{
+    "style": {
+        "font-family": "sans-serif",
+        "background-color": "#ffffff",
+        "background-image": "",
+        "background-size": "100%",
+        "node-color": "#ffffff",
+        "border-width": 4,
+        "border-color": "#000000",
+        "radius": 50,
+        "node-padding": 5,
+        "node-margin": 2,
+        "outside-position": "auto",
+        "node-icon-image": "",
+        "node-background-image": "",
+        "icon-position": "inside",
+        "icon-size": 64,
+        "caption-position": "inside",
+        "caption-max-width": 200,
+        "caption-color": "#000000",
+        "caption-font-size": 50,
+        "caption-font-weight": "normal",
+        "label-position": "inside",
+        "label-display": "pill",
+        "label-color": "#000000",
+        "label-background-color": "#ffffff",
+        "label-border-color": "#000000",
+        "label-border-width": 4,
+        "label-font-size": 40,
+        "label-padding": 5,
+        "label-margin": 4,
+        "directionality": "directed",
+        "detail-position": "inline",
+        "detail-orientation": "parallel",
+        "arrow-width": 5,
+        "arrow-color": "#000000",
+        "margin-start": 5,
+        "margin-end": 5,
+        "margin-peer": 20,
+        "attachment-start": "normal",
+        "attachment-end": "normal",
+        "relationship-icon-image": "",
+        "type-color": "#000000",
+        "type-background-color": "#ffffff",
+        "type-border-color": "#000000",
+        "type-border-width": 0,
+        "type-font-size": 16,
+        "type-padding": 5,
+        "property-position": "outside",
+        "property-alignment": "colon",
+        "property-color": "#000000",
+        "property-font-size": 16,
+        "property-font-weight": "normal"
+    },
+    "nodes": [
+        {
+            "id": "n1",
+            "position": {
+                "x": -441.8194545697634,
+                "y": 199.04804490164895
+            },
+            "caption": "",
+            "labels": ["TASK_GROUP"],
+            "properties": {
+                "id": "String",
+                "titleName": "String",
+                "firstName": "String",
+                "lastName": "String",
+                "hn": "String",
+                "entry": "Entry",
+                "destination": "String",
+                "createdAt": "Date",
+                "updatedAt": "Date"
+            },
+            "style": {
+                "radius": 80,
+                "node-color": "#e27300"
+            }
+        },
+        {
+            "id": "n2",
+            "position": {
+                "x": -6.827716158206092,
+                "y": 327.755709788101
+            },
+            "caption": "",
+            "labels": ["TASK"],
+            "properties": {
+                "id": "String",
+                "taskType": "TaskType",
+                "title": "String",
+                "isRequired": "Boolean",
+                "groupType": "String",
+                "createdAt": "Datetime",
+                "updatedAt": "Datetime",
+                "isCompleted": "Boolean",
+                "standardTime": "Int",
+                "roleAllowed": "Role[]",
+                "roleDisallowed": "Role[]",
+                "departmentAllowed": "Department[]",
+                "departmentDisallowed": "Department[]",
+                "eValue": "Int?",
+                "vValue": "String?",
+                "mValue": "String?",
+                "bloodPressureH": "Int?",
+                "bloodPressureL": "Int?",
+                "pulse": "Int?"
+            },
+            "style": {
+                "property-position": "outside",
+                "outside-position": "bottom",
+                "radius": 80,
+                "border-color": "#000000",
+                "node-color": "#0c797d"
+            }
+        },
+        {
+            "id": "n3",
+            "position": {
+                "x": -441.8194545697634,
+                "y": 523.513584190542
+            },
+            "caption": "",
+            "labels": ["USER"],
+            "properties": {
+                "id(unique)": "String",
+                "department": "String",
+                "username": "String",
+                "password": "String",
+                "role": "String",
+                "created_at": "Date",
+                "updated_at": "Date"
+            },
+            "style": {
+                "radius": 80,
+                "node-color": "#aea1ff"
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "id": "n0",
+            "fromId": "n2",
+            "toId": "n1",
+            "type": "IN_TASKGROUP",
+            "properties": {},
+            "style": {}
+        },
+        {
+            "id": "n1",
+            "fromId": "n2",
+            "toId": "n2",
+            "type": "NEXT",
+            "properties": {},
+            "style": {
+                "type-color": "#000000",
+                "arrow-color": "#0c797d"
+            }
+        },
+        {
+            "id": "n2",
+            "type": "ACT",
+            "style": {},
+            "properties": {
+                "actType": "String",
+                "actTime": "Datetime"
+            },
+            "fromId": "n3",
+            "toId": "n2"
+        }
+    ]
+}
