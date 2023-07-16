@@ -1,0 +1,202 @@
+{
+    "style": {
+        "font-family": "sans-serif",
+        "background-color": "#ffffff",
+        "background-image": "",
+        "background-size": "100%",
+        "node-color": "#ffffff",
+        "border-width": 4,
+        "border-color": "#000000",
+        "radius": 50,
+        "node-padding": 5,
+        "node-margin": 2,
+        "outside-position": "auto",
+        "node-icon-image": "",
+        "node-background-image": "",
+        "icon-position": "inside",
+        "icon-size": 64,
+        "caption-position": "inside",
+        "caption-max-width": 200,
+        "caption-color": "#000000",
+        "caption-font-size": 50,
+        "caption-font-weight": "normal",
+        "label-position": "inside",
+        "label-display": "pill",
+        "label-color": "#000000",
+        "label-background-color": "#ffffff",
+        "label-border-color": "#000000",
+        "label-border-width": 4,
+        "label-font-size": 40,
+        "label-padding": 5,
+        "label-margin": 4,
+        "directionality": "directed",
+        "detail-position": "inline",
+        "detail-orientation": "parallel",
+        "arrow-width": 5,
+        "arrow-color": "#000000",
+        "margin-start": 5,
+        "margin-end": 5,
+        "margin-peer": 20,
+        "attachment-start": "normal",
+        "attachment-end": "normal",
+        "relationship-icon-image": "",
+        "type-color": "#000000",
+        "type-background-color": "#ffffff",
+        "type-border-color": "#000000",
+        "type-border-width": 0,
+        "type-font-size": 16,
+        "type-padding": 5,
+        "property-position": "outside",
+        "property-alignment": "colon",
+        "property-color": "#000000",
+        "property-font-size": 16,
+        "property-font-weight": "normal"
+    },
+    "nodes": [
+        {
+            "id": "n0",
+            "position": {
+                "x": 75,
+                "y": 50
+            },
+            "caption": "",
+            "labels": ["TASK_GROUP"],
+            "properties": {
+                "id": "String",
+                "entry": "Entry",
+                "destination": "String",
+                "createdAt": "Date",
+                "updatedAt": "Date"
+            },
+            "style": {
+                "radius": 80,
+                "node-color": "#e27300"
+            }
+        },
+        {
+            "id": "n1",
+            "position": {
+                "x": 490.24680476085746,
+                "y": 184.34912810317974
+            },
+            "caption": "",
+            "labels": ["TASK"],
+            "properties": {
+                "id": "String",
+                "taskType": "TaskType",
+                "title": "String",
+                "isRequired": "Boolean",
+                "status": "TaskStatus",
+                "taskCategory": "String",
+                "createdAt": "Datetime",
+                "updatedAt": "Datetime",
+                "isCompleted": "Boolean",
+                "standardTime": "Int",
+                "roleAllowed": "Role[]",
+                "roleDisallowed": "Role[]",
+                "departmentAllowed": "Department[]",
+                "departmentDisallowed": "Department[]",
+                "eValue": "Int?",
+                "vValue": "String?",
+                "mValue": "String?",
+                "bloodPressureH": "Int?",
+                "bloodPressureL": "Int?",
+                "pulse": "Int?"
+            },
+            "style": {
+                "property-position": "outside",
+                "outside-position": "bottom",
+                "radius": 80,
+                "border-color": "#000000",
+                "node-color": "#0c797d"
+            }
+        },
+        {
+            "id": "n2",
+            "position": {
+                "x": -12.859370870570416,
+                "y": 328.0951155115826
+            },
+            "caption": "",
+            "labels": ["USER"],
+            "properties": {
+                "id": "String",
+                "department": "String",
+                "username": "String",
+                "password": "String",
+                "role": "String",
+                "createdAt": "Date",
+                "updatedAt": "Date"
+            },
+            "style": {
+                "radius": 80,
+                "node-color": "#aea1ff"
+            }
+        },
+        {
+            "id": "n3",
+            "position": {
+                "x": -266.1115561681346,
+                "y": 50
+            },
+            "caption": "",
+            "labels": ["PATIENT"],
+            "properties": {
+                "id": "String",
+                "title": "String",
+                "firstName": "String",
+                "lastName": "String",
+                "hospitalNumber": "String",
+                "visutNumber": "String",
+                "admitNumber": "String",
+                "createdAt": "Date",
+                "updatedAt": "Date"
+            },
+            "style": {
+                "radius": 80,
+                "node-color": "#68bc00",
+                "outside-position": "auto"
+            }
+        }
+    ],
+    "relationships": [
+        {
+            "id": "n0",
+            "type": "TASK_IN",
+            "style": {},
+            "properties": {},
+            "fromId": "n1",
+            "toId": "n0"
+        },
+        {
+            "id": "n1",
+            "fromId": "n1",
+            "toId": "n1",
+            "type": "NEXT",
+            "properties": {},
+            "style": {
+                "type-color": "#000000",
+                "arrow-color": "#0c797d"
+            }
+        },
+        {
+            "id": "n2",
+            "type": "USER_ACT",
+            "style": {},
+            "properties": {
+                "actType": "String",
+                "actTime": "Datetime"
+            },
+            "fromId": "n2",
+            "toId": "n1"
+        },
+        {
+            "id": "n3",
+            "type": "PATIENT_IN",
+            "style": {},
+            "properties": {},
+            "fromId": "n3",
+            "toId": "n0"
+        }
+    ]
+}
