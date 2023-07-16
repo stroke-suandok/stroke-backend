@@ -121,6 +121,9 @@
             "labels": ["USER"],
             "properties": {
                 "id": "String",
+                "title": "String",
+                "firstName": "String",
+                "lastName": "String",
                 "department": "String",
                 "username": "String",
                 "password": "String",
