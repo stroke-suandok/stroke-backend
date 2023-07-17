@@ -1,36 +1,11 @@
-import { driver } from '../../db/server';
 import { getNodePosition } from '../../graph';
-import { createTaskGroups } from '../taskgroups/services';
-import { createTasks, getTasksByTaskGroupId } from '../tasks/services';
-import { blueprint, formatBluePrint } from './utils';
+import { driver } from '../../plugins/db';
 
 export async function clearData() {
     const session = driver.session();
     await session.run('MATCH (n) DETACH DELETE n');
     await session.close();
     return { data: 'All cleared' };
-}
-
-export async function seedData() {
-    const taskGroups = await createTaskGroups(
-        'HN' + Date.now().toString().slice(-5),
-    );
-    const taskGroupId = taskGroups[0].id;
-    const parentTasks = await getTasksByTaskGroupId(taskGroupId);
-    const parentTaskId = parentTasks[0].id;
-    const blueprintMap = formatBluePrint(parentTaskId, blueprint);
-
-    for await (const b of blueprintMap) {
-        await createTasks({
-            taskGroupId: taskGroupId,
-            parentTaskIds: b.parentIds,
-            taskType: b.taskType,
-            title: b.title,
-            requiredArr: b.requiredArr,
-            status: b.status,
-            id: b.id,
-        });
-    }
 }
 
 export async function getTasksWithActiveStatus() {

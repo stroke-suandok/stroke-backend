@@ -1,14 +1,7 @@
-import { ApolloServer, BaseContext } from '@apollo/server';
-import fastifyApollo, {
-    fastifyApolloDrainPlugin,
-} from '@as-integrations/fastify';
 import AutoLoad, { AutoloadPluginOptions } from '@fastify/autoload';
-import cors from '@fastify/cors';
 import 'dotenv/config';
 import { FastifyPluginAsync } from 'fastify';
 import { join } from 'path';
-
-import { neoSchema } from './db/server';
 
 export type AppOptions = {
     // Place your custom options for app below here.
@@ -22,20 +15,6 @@ const app: FastifyPluginAsync<AppOptions> = async (
     opts,
 ): Promise<void> => {
     // Place here your custom code!
-
-    // Graphql server
-    const apollo = new ApolloServer<BaseContext>({
-        schema: await neoSchema.getSchema(),
-        plugins: [fastifyApolloDrainPlugin(fastify)],
-    });
-    await neoSchema.assertIndexesAndConstraints({ options: { create: true } });
-    await apollo.start();
-    await fastify.register(fastifyApollo(apollo));
-
-    // CORS
-    await fastify.register(cors, {
-        origin: '*',
-    });
 
     // Do not touch the following lines
 

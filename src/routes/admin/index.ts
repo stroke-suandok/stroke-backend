@@ -5,8 +5,7 @@ import { sseRouteHandler } from '../../plugins/sse/utils';
 import {
     clearData,
     getGraphInfo,
-    getTasksWithActiveStatus,
-    seedData,
+    getTasksWithActiveStatus, // seedData,
 } from './services';
 
 const admin: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
@@ -15,11 +14,6 @@ const admin: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     server.get('/clear', async function (request, reply) {
         await clearData();
         return 'All Cleared';
-    });
-
-    server.get('/seed', async function (request, reply) {
-        await seedData();
-        return 'Seeded';
     });
 
     server.get('/tasks', async function (request, reply) {

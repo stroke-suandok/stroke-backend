@@ -6,7 +6,7 @@ import neo4j from 'neo4j-driver';
 
 import { typeDefs } from '../src/db/typeDefs';
 
-const main = async () => {
+export const main = async () => {
     const driver = neo4j.driver(
         'bolt://localhost:7687',
         neo4j.auth.basic('neo4j', process.env.DB_PASSWORD || ''),
