@@ -106,5 +106,14 @@ type PATIENT {
   updatedAt: DateTime @timestamp(operations: [UPDATE])
 
   taskGroups: [TASK_GROUP!]! @relationship(type: "PATIENT_IN", direction: OUT)
+
+
 }
+
+type SESSION {
+    id: ID! @id
+    createdAt: DateTime! @timestamp(operations: [CREATE])
+    shift: String
+  }
+
 `;
