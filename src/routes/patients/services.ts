@@ -3,20 +3,7 @@ import { FastifyInstance } from 'fastify';
 
 import { type CreatePatientReq, type SearchPatientsReq } from './types';
 import { type Patient } from './types';
-
-export const patientFragment = gql`
-    fragment PATIENT_FRAGMENT on PATIENT {
-        id
-        title
-        firstName
-        lastName
-        hospitalNumber
-        visitNumber
-        admitNumber
-        updatedAt
-        createdAt
-    }
-`;
+import { patientFragment } from './types';
 
 export async function getPatients(fastify: FastifyInstance) {
     const gqlQuery = gql`

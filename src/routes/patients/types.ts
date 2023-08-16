@@ -1,4 +1,19 @@
+import { gql } from '@apollo/client';
 import { Static, Type } from '@sinclair/typebox';
+
+export const patientFragment = gql`
+    fragment PATIENT_FRAGMENT on PATIENT {
+        id
+        title
+        firstName
+        lastName
+        hospitalNumber
+        visitNumber
+        admitNumber
+        updatedAt
+        createdAt
+    }
+`;
 
 // Base type
 export const Patient = Type.Object({

@@ -2,21 +2,9 @@ import { FastifyInstance } from 'fastify';
 
 // import { v4 as uuidv4 } from 'uuid';
 import { gql } from '../../plugins/db/client';
-import { patientFragment } from '../patients/services';
 import { searchPatients } from '../patients/services';
 import { type CreateTaskGroupReq, type SearchTaskGroupsReq } from './types';
-
-const taskGroupFragment = gql`
-    ${patientFragment}
-    fragment TASK_GROUP_FRAGMENT on TASK_GROUP {
-        id
-        destination
-        entry
-        patient {
-            ...PATIENT_FRAGMENT
-        }
-    }
-`;
+import { taskGroupFragment } from './types';
 
 export async function getTaskGroups(fastify: FastifyInstance) {
     const gqlQuery = gql`

@@ -1,6 +1,20 @@
 import { Static, Type } from '@sinclair/typebox';
 
+import { gql } from '../../plugins/db/client';
 import { Patient } from '../patients/types';
+import { patientFragment } from '../patients/types';
+
+export const taskGroupFragment = gql`
+    ${patientFragment}
+    fragment TASK_GROUP_FRAGMENT on TASK_GROUP {
+        id
+        destination
+        entry
+        patient {
+            ...PATIENT_FRAGMENT
+        }
+    }
+`;
 
 //  Base type
 export const TaskGroup = Type.Object({
@@ -9,6 +23,7 @@ export const TaskGroup = Type.Object({
     destination: Type.Optional(Type.String()),
     patient: Patient,
 });
+export type TaskGroup = Static<typeof TaskGroup>;
 
 // Default response
 export const GetTaskGroupRes = Type.Array(TaskGroup);

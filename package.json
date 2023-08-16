@@ -16,7 +16,8 @@
         "watch:ts": "tsc -w",
         "dev": "npm run build:ts && concurrently -k -p \"[{name}]\" -n \"TypeScript,App\" -c \"yellow.bold,cyan.bold\" \"npm:watch:ts\" \"npm:dev:start\"",
         "dev:start": "fastify start --ignore-watch=.ts$ -w -l info -P dist/app.js",
-        "standalone": "ts-node ./standalone_server/index.ts"
+        "standalone": "ts-node ./standalone_server/index.ts",
+        "seed": "ts-node ./src/db/seed/index.ts"
     },
     "keywords": [],
     "author": "",
@@ -46,6 +47,7 @@
         "uuid": "^9.0.0"
     },
     "devDependencies": {
+        "@faker-js/faker": "^8.0.2",
         "@trivago/prettier-plugin-sort-imports": "^4.1.1",
         "@types/node": "^18.0.0",
         "@types/tap": "^15.0.5",
