@@ -81,7 +81,7 @@ type USER {
   firstName: String
   lastName: String
   department: Department @default(value: ANY)
-  username: String!
+  username: String! @unique
   password: String!
   role: Role! @default(value: USER)
   createdAt: DateTime! @timestamp(operations: [CREATE])

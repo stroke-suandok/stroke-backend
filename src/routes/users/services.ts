@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client';
 import { FastifyInstance } from 'fastify';
 
-import { type CreateUserReq } from './types';
+import { type CreateUserReq, type SearchUserReq, type UsersRes } from './types';
 
-const userFragment = gql`
+export const userFragment = gql`
     fragment USER_FRAGMENT on USER {
         id
         username
@@ -26,8 +26,29 @@ export async function getUsers(fastify: FastifyInstance) {
             }
         }
     `;
-    const results = await fastify.apolloClient.query({ query: gqlQuery });
+    const results = await fastify.apolloClient.query({
+        query: gqlQuery,
+    });
     return results.data.users;
+}
+
+export async function searchUsers(
+    fastify: FastifyInstance,
+    body: SearchUserReq,
+) {
+    const gqlQuery = gql`
+        ${userFragment}
+        query Query($where: USERWhere) {
+            users(where: $where) {
+                ...USER_FRAGMENT
+            }
+        }
+    `;
+    const results = await fastify.apolloClient.query({
+        query: gqlQuery,
+        variables: { where: body },
+    });
+    return results.data.users as UsersRes;
 }
 
 export async function createUsers(
@@ -44,9 +65,20 @@ export async function createUsers(
             }
         }
     `;
-    const result = await fastify.apolloClient.mutate({
-        mutation: gqlMutation,
-        variables: { input: body },
-    });
-    return result.data.createUsers.users;
+    try {
+        const result = await fastify.apolloClient.mutate({
+            mutation: gqlMutation,
+            variables: { input: body },
+        });
+
+        if (result.errors && result.errors.length > 0) {
+            throw fastify.httpErrors.internalServerError(
+                JSON.stringify(result.errors),
+            );
+        }
+
+        return result.data.createUsers.users;
+    } catch (error) {
+        throw fastify.httpErrors.internalServerError(JSON.stringify(error));
+    }
 }

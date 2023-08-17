@@ -1,7 +1,7 @@
 import { Static, Type } from '@sinclair/typebox';
 
 import { TaskGroup } from '../taskgroups/types';
-import { User } from '../users/types';
+import { UserRes } from '../users/types';
 
 const Task = Type.Object({
     id: Type.String(),
@@ -21,7 +21,7 @@ const Task = Type.Object({
     standardTime: Type.Number(),
 
     taskGroup: TaskGroup,
-    users: Type.Array(User),
+    users: Type.Array(UserRes),
 });
 
 //  Default response

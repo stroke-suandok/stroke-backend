@@ -1,8 +1,8 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { createUsers, getUsers } from './services';
-import { CreateUserReq, GetUsersRes } from './types';
+import { createUsers, getUsers, searchUsers } from './services';
+import { CreateUserReq, SearchUserReq, UsersRes } from './types';
 
 const users: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -14,7 +14,7 @@ const users: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             description: 'Get all users',
             tags: ['users'],
             response: {
-                200: GetUsersRes,
+                200: UsersRes,
             },
         },
         handler: async function (request, reply) {
@@ -25,6 +25,20 @@ const users: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
 
     server.route({
         method: 'POST',
+        url: '/search',
+        schema: {
+            body: SearchUserReq,
+            response: {
+                200: UsersRes,
+            },
+        },
+        handler: async function (request, reply) {
+            return await searchUsers(server, request.body);
+        },
+    });
+
+    server.route({
+        method: 'PUT',
         schema: {
             description: 'Create a user',
             tags: ['users'],

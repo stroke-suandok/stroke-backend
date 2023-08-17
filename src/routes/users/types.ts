@@ -1,23 +1,38 @@
 import { Static, Type } from '@sinclair/typebox';
 
-export const User = Type.Object({
+export const UserBase = Type.Object({
     id: Type.String(),
     username: Type.String(),
     password: Type.String(),
     title: Type.String(),
     firstName: Type.String(),
     lastName: Type.String(),
-    role: Type.Optional(Type.String()),
-    department: Type.Optional(Type.String()),
+    role: Type.String(),
+    department: Type.String(),
     updatedAt: Type.Optional(Type.String()),
     createdAt: Type.String(),
 });
-const UserNoPassword = Type.Omit(User, ['password']);
-export type User = Static<typeof UserNoPassword>;
+export type UserBase = Static<typeof UserBase>;
+const UserNoPassword = Type.Omit(UserBase, ['password']);
 
 // Default response
-export const GetUsersRes = Type.Array(UserNoPassword);
+export const UserRes = UserNoPassword;
+export const UsersRes = Type.Array(UserNoPassword);
+export type UserRes = Static<typeof UserRes>;
+export type UsersRes = Static<typeof UsersRes>;
 
-// Create user
-export const CreateUserReq = Type.Omit(User, ['id', 'updatedAt', 'createdAt']);
+// Search
+export const SearchUserReq = Type.Object({
+    ...Type.Partial(
+        Type.Omit(UserNoPassword, ['title', 'updatedAt', 'createdAt']),
+    ).properties,
+});
+export type SearchUserReq = Static<typeof SearchUserReq>;
+
+// Create
+export const CreateUserReq = Type.Omit(UserBase, [
+    'id',
+    'updatedAt',
+    'createdAt',
+]);
 export type CreateUserReq = Static<typeof CreateUserReq>;
