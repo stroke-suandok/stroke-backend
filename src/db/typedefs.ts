@@ -80,7 +80,7 @@ type USER {
   title: String
   firstName: String
   lastName: String
-  department: Department @default(value: ANY)
+  department: String
   username: String! @unique
   password: String!
   role: Role! @default(value: USER)
@@ -104,6 +104,7 @@ type PATIENT {
   admitNumber: String
   createdAt: DateTime! @timestamp(operations: [CREATE])
   updatedAt: DateTime @timestamp(operations: [UPDATE])
+  Status: Boolean
 
   taskGroups: [TASK_GROUP!]! @relationship(type: "PATIENT_IN", direction: OUT)
 }
