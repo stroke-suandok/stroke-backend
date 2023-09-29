@@ -1,8 +1,8 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { createTask, getTasks, searchTasks } from './services';
-import { CreateTaskReq, SearchTaskReq } from './types';
+import { createTask, getTasks, searchTasks, patchTask, deleteTask } from './services';
+import { CreateTaskReq, PatchTaskReq, SearchTaskReq, DeleteTaskReq } from './types';
 
 const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -38,6 +38,31 @@ const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             return data;
         },
     });
+
+    server.route({
+        method: 'PATCH',
+        url: '/',
+        schema: {
+            body: PatchTaskReq,
+        },
+        handler: async function (request, reply) {
+            const data = await patchTask(server, request.body);
+            return data;
+        },
+    });
+
+    server.route({
+        method: 'DELETE',
+        url: '/',
+        schema: {
+            body: DeleteTaskReq,
+        },
+        handler: async function (request, reply) {
+            const data = await deleteTask(server, request.body);
+            return data;
+        },
+    });
+    
 };
 
 export default tasks;

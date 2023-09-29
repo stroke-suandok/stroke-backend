@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { gql } from '../../plugins/db/client';
 import { searchTaskGroups } from '../taskgroups/services';
-import { type CreateTaskReq, type SearchTaskReq } from './types';
+import { type PatchTaskReq, type CreateTaskReq, type SearchTaskReq, type DeleteTaskReq } from './types';
 
 const taskFragment = gql`
     fragment TASK_FRAGMENT on TASK {
@@ -150,4 +150,81 @@ async function checkTasksExist(fastify: FastifyInstance, ids: string[]) {
     }
 
     return true;
+}
+
+export async function patchTask(fastify:FastifyInstance, body: PatchTaskReq){
+    const gqlMutation = gql`
+    ${taskFragment}
+    mutation Mutation($where: TASKWhere, $update: TASKUpdateInput) {
+        updateTasks(where: $where, update: $update) {
+          tasks {
+            ...TASK_FRAGMENT
+          }
+        }
+      }
+    `;
+
+    const { id, ...rest } = body;
+
+    try {
+        const result = await fastify.apolloClient.mutate({
+            mutation: gqlMutation,
+            variables: {
+                "where": {
+                  "id": id
+                },
+                "update": rest
+              }
+        });
+
+        if (result.errors && result.errors.length > 0) {
+            throw fastify.httpErrors.internalServerError(
+                JSON.stringify(result.errors),
+            );
+        }
+
+        return result.data.updateTasks.tasks;
+    } catch (error) {
+        throw fastify.httpErrors.internalServerError(JSON.stringify(error));
+    }
+
+}
+
+export async function deleteTask(fastify:FastifyInstance, body: DeleteTaskReq){
+    const gqlMutation = gql`
+    ${taskFragment}
+    mutation Mutation($where: TASKWhere) {
+        deleteTasks(where: $where) {
+          nodesDeleted
+          relationshipsDeleted
+          task{
+            ...TASK_FRAGMENT
+          }
+        }
+      }
+    `;
+
+    const {id} = body;
+    try{
+        const result = await fastify.apolloClient.mutate({
+            mutation: gqlMutation,
+            variables: {
+                "where": {
+                    "id": id
+                  }
+            }
+
+        });
+        if (result.errors && result.errors.length > 0) {
+            throw fastify.httpErrors.internalServerError(
+                JSON.stringify(result.errors),
+            );
+        }
+
+        return result.data.deleteTask.tasks;
+
+    }catch (error) {
+        throw fastify.httpErrors.internalServerError(JSON.stringify(error));
+    }
+
 }
