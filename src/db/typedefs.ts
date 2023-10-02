@@ -104,7 +104,6 @@ type PATIENT {
   admitNumber: String
   createdAt: DateTime! @timestamp(operations: [CREATE])
   updatedAt: DateTime @timestamp(operations: [UPDATE])
-  Status: Boolean
 
   taskGroups: [TASK_GROUP!]! @relationship(type: "PATIENT_IN", direction: OUT)
 }

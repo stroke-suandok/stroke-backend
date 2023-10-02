@@ -34,7 +34,7 @@ const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     });
 
     server.route({
-        method: 'POST',
+        method: 'PUT',
         url: '/',
         schema: {
             body: CreateTaskGroupReq,
@@ -60,19 +60,7 @@ const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         },
     });
 
-    server.route({
-        method: 'PUT',
-        url: '/',
-        // schema: {
-        //     body: SearchTaskGroupsReq,
-        //     response: {
-        //         200: GetTaskGroupRes,
-        //     },
-        // },
-        handler: async function (request, reply) {
-            console.log(request.body)
-        },
-    });
+
 };
 
 export default taskgroups;

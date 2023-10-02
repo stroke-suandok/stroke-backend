@@ -12,7 +12,7 @@ export const patientFragment = gql`
         admitNumber
         updatedAt
         createdAt
-        Status
+        
     }
 `;
 
@@ -27,7 +27,6 @@ export const Patient = Type.Object({
     admitNumber: Type.Optional(Type.String()),
     updatedAt: Type.String(),
     createdAt: Type.String(),
-    Status: Type.Boolean()
 });
 export type Patient = Static<typeof Patient>;
 

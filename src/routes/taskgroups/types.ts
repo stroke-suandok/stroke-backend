@@ -31,7 +31,9 @@ export const GetTaskGroupRes = Type.Array(TaskGroup);
 // Create taskgroup
 export const CreateTaskGroupReq = Type.Object({
     ...Type.Omit(TaskGroup, ['id', 'patient']).properties,
-    hospitalNumber: Type.String(),
+    destination: Type.String(),
+    entry: Type.String(),
+    ...Type.Pick(Patient,['hospitalNumber', 'firstName', 'lastName', 'title']).properties
 });
 export type CreateTaskGroupReq = Static<typeof CreateTaskGroupReq>;
 
