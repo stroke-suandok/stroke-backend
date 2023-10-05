@@ -27,7 +27,6 @@ const patientsData = [...Array(20).keys()].map((idx) => {
         hospitalNumber: faker.string.numeric(7),
         visitNumber: faker.string.numeric(6),
         admitNumber: faker.string.numeric(5),
-        Status: faker.datatype.boolean({ probability: 0.5 })
     };
 });
 
