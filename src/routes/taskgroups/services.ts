@@ -5,6 +5,7 @@ import { gql } from '../../plugins/db/client';
 import { searchPatients, createPatient } from '../patients/services';
 import { type CreateTaskGroupReq, type SearchTaskGroupsReq } from './types';
 import { taskGroupFragment } from './types';
+import { createBlueprint } from '../blueprints/services';
 
 export async function getTaskGroups(fastify: FastifyInstance) {
     const gqlQuery = gql`
@@ -23,7 +24,7 @@ export async function createTaskGroup(
     fastify: FastifyInstance,
     body: CreateTaskGroupReq,
 ) {
-    const { hospitalNumber, title, firstName, lastName, ...bodyTaskGroup } = body;
+    const { hospitalNumber, title, firstName, lastName, blueprint,...bodyTaskGroup } = body;
 
     const patients = await searchPatients(fastify, {
         hospitalNumber: hospitalNumber,
@@ -78,7 +79,7 @@ export async function createTaskGroup(
             JSON.stringify(result.errors),
         );
     }
-
+    createBlueprint(fastify,{blueprintType:"BP_demo",taskGroupId:result.data.createTaskGroups.taskGroups[0].id})
     return result.data.createTaskGroups.taskGroups;
 }
 

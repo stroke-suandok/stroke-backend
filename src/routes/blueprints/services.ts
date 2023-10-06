@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
 import { createTask } from '../tasks/services';
-import { BP_demo } from './lists';
+import { BP_demo} from './lists';
 import { type CreateBlueprintReq } from './types';
 import { formatBlueprint } from './utils';
 
@@ -17,3 +17,4 @@ export async function createBlueprint(
 
     return { success: true };
 }
+

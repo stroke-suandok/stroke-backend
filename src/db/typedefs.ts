@@ -32,6 +32,7 @@ enum UserActType {
 enum TaskStatus {
   PENDING
   SUCCESS
+  CANCEL
 }
 
 type TASK {

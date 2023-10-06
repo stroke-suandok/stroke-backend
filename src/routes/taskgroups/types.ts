@@ -33,7 +33,8 @@ export const CreateTaskGroupReq = Type.Object({
     ...Type.Omit(TaskGroup, ['id', 'patient']).properties,
     destination: Type.String(),
     entry: Type.String(),
-    ...Type.Pick(Patient,['hospitalNumber', 'firstName', 'lastName', 'title']).properties
+    ...Type.Pick(Patient,['hospitalNumber', 'firstName', 'lastName', 'title']).properties,
+    blueprint: Type.String()
 });
 export type CreateTaskGroupReq = Static<typeof CreateTaskGroupReq>;
 
