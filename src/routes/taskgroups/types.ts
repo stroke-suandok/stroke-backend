@@ -34,7 +34,7 @@ export const CreateTaskGroupReq = Type.Object({
     destination: Type.String(),
     entry: Type.String(),
     ...Type.Pick(Patient,['hospitalNumber', 'firstName', 'lastName', 'title']).properties,
-    blueprint: Type.String()
+    blueprintType: Type.String()
 });
 export type CreateTaskGroupReq = Static<typeof CreateTaskGroupReq>;
 

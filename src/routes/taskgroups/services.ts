@@ -24,7 +24,7 @@ export async function createTaskGroup(
     fastify: FastifyInstance,
     body: CreateTaskGroupReq,
 ) {
-    const { hospitalNumber, title, firstName, lastName, blueprint,...bodyTaskGroup } = body;
+    const { hospitalNumber, title, firstName, lastName, blueprintType,...bodyTaskGroup } = body;
 
     const patients = await searchPatients(fastify, {
         hospitalNumber: hospitalNumber,
@@ -79,7 +79,7 @@ export async function createTaskGroup(
             JSON.stringify(result.errors),
         );
     }
-    createBlueprint(fastify,{blueprintType:"BP_demo",taskGroupId:result.data.createTaskGroups.taskGroups[0].id})
+    createBlueprint(fastify,{blueprintType:blueprintType,taskGroupId:result.data.createTaskGroups.taskGroups[0].id})
     return result.data.createTaskGroups.taskGroups;
 }
 
