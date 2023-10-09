@@ -5,17 +5,24 @@ import { getNodePosition } from './uitls';
 
 export async function getTasks(fastify: FastifyInstance, body: TasksReq) {
     const query = `
-        MATCH (n:TASK)-[:IN_TASKGROUP]->(:TASK_GROUP {
-            id:$taskGroupId
-        } )
-        MATCH (:TASK_GROUP {
-            id:$taskGroupId
-        })<-[:IN_TASKGROUP]-(parent:TASK)-[r:NEXT]->(:TASK)
-        WITH collect( DISTINCT n{.*, elementId:elementId(n)}) AS nodes, collect( DISTINCT r{.*, elementId:elementId(r), source:elementId(startNode(r)), target:elementId(endNode(r)), isRequired:parent.isRequired }) AS edges
-        WITH {
-            nodes:nodes, edges:edges
-        } AS data
-        RETURN data
+    MATCH (n: TASK) - [: IN_TASKGROUP] - > (: TASK_GROUP {
+        id: $taskGroupId
+        })
+        MATCH (: TASK_GROUP {
+          id: $taskGroupId
+          }) < -[: IN_TASKGROUP] - (parent: TASK) - [r: NEXT] - > (: TASK)
+          WITH collect( DISTINCT n {
+            .*, createdAt: apoc.temporal.format(n.createdAt, 'iso_instant'), elementId: elementId(n)
+            }) AS nodes, collect( DISTINCT r {
+              .*, elementId: elementId(r), source: elementId(startNode(r)), target: elementId(endNode(r)), isRequired: parent.isRequired
+              }) AS edges
+              WITH {
+                nodes: nodes,
+                edges: edges
+              }
+               AS data
+              RETURN data
+      
     `;
 
     const { records } = await fastify.neo4jDriver.executeQuery(query, {

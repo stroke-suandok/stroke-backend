@@ -52,8 +52,8 @@ type TASK {
   departmentDisallowed: [Department!]! @default(value: [])
   standardTime: Int 
   
-  parents: [TASK!]! @relationship(type: "NEXT", direction: OUT)
-  children: [TASK!]! @relationship(type: "NEXT", direction: IN)
+  parents: [TASK!]! @relationship(type: "NEXT", direction: IN)
+  children: [TASK!]! @relationship(type: "NEXT", direction: OUT)
   taskGroup: TASK_GROUP @relationship(type: "IN_TASKGROUP", direction: OUT)
   users: [USER!]! @relationship(type: "USER_ACT", properties: "USER_ACT_PROPS", direction: IN)
 

@@ -1,7 +1,12 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { createTaskGroup, getTaskGroups, searchTaskGroups } from './services';
+import {
+    createTaskGroup,
+    getTaskGroups,
+    getTaskGroupsWithDetails,
+    searchTaskGroups,
+} from './services';
 import {
     CreateTaskGroupReq,
     GetTaskGroupRes,
@@ -34,6 +39,16 @@ const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     });
 
     server.route({
+        method: 'GET',
+        url: '/details',
+        schema: {},
+        handler: async function (request, reply) {
+            const data = await getTaskGroupsWithDetails(server);
+            return data;
+        },
+    });
+
+    server.route({
         method: 'PUT',
         url: '/',
         schema: {
@@ -59,8 +74,6 @@ const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             return data;
         },
     });
-
-
 };
 
 export default taskgroups;
