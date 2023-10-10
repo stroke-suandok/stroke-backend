@@ -1,8 +1,8 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { createUsers, getUsers, searchUsers } from './services';
-import { CreateUserReq, SearchUserReq, UsersRes } from './types';
+import { deleteUsers,createUsers, getUsers, searchUsers } from './services';
+import { DeleteUserReq,CreateUserReq, SearchUserReq, UsersRes } from './types';
 
 const users: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -47,6 +47,20 @@ const users: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         url: '/',
         handler: async function (request, reply) {
             const data = await createUsers(server, request.body);
+            return data;
+        },
+    });
+
+    server.route({
+        method: 'DELETE',
+        schema: {
+            description: 'Delete a user',
+            tags: ['users'],
+            body: DeleteUserReq,
+        },
+        url: '/',
+        handler: async function (request, reply) {
+            const data = await deleteUsers(server, request.body);
             return data;
         },
     });

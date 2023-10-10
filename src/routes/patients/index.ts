@@ -1,8 +1,9 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { createPatient, getPatients, searchPatients } from './services';
-import { CreatePatientReq, GetPatientsRes, SearchPatientsReq } from './types';
+import { createPatient, getPatients, searchPatients, searchTaskGroup } from './services';
+import { CreatePatientReq, GetPatientsRes, SearchPatientsReq, SearchTGReq } from './types';
+import { TaskGroups} from '../taskgroups/types';
 
 const patients: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
     const server = fastify.withTypeProvider<TypeBoxTypeProvider>();
@@ -54,6 +55,22 @@ const patients: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         },
         handler: async function (request, reply) {
             const data = await searchPatients(server, request.body);
+            return data;
+        },
+    });
+
+    server.route({
+        method: 'POST',
+        url: '/taskgroups',
+        schema: {
+
+            body: SearchTGReq,
+            response: {
+                200: TaskGroups,
+            },
+        },
+        handler: async function (request, reply) {
+            const data = await searchTaskGroup(server, request.body);
             return data;
         },
     });

@@ -25,8 +25,11 @@ export const TaskGroup = Type.Object({
 });
 export type TaskGroup = Static<typeof TaskGroup>;
 
+
 // Default response
 export const GetTaskGroupRes = Type.Array(TaskGroup);
+export const TaskGroups = Type.Array(TaskGroup);
+export type TaskGroups = Static<typeof TaskGroups>
 
 // Create taskgroup
 export const CreateTaskGroupReq = Type.Object({

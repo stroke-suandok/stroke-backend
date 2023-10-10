@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import { FastifyInstance } from 'fastify';
 
-import { type CreateUserReq, type SearchUserReq, type UsersRes } from './types';
+import { type DeleteUserReq, type CreateUserReq, type SearchUserReq, type UsersRes } from './types';
 
 export const userFragment = gql`
     fragment USER_FRAGMENT on USER {
@@ -81,4 +81,43 @@ export async function createUsers(
     } catch (error) {
         throw fastify.httpErrors.internalServerError(JSON.stringify(error));
     }
+}
+
+export async function deleteUsers(fastify:FastifyInstance, body: DeleteUserReq){
+    const gqlMutation = gql`
+    ${userFragment}
+      mutation Mutation($where: USERWhere) {
+        deleteUser(where: $where) {
+        nodesDeleted
+        relationshipsDeleted
+        user{
+            ...USER_FRAGMENT
+          }
+        }
+        }
+    `;
+
+    const {id} = body;
+    try{
+        const result = await fastify.apolloClient.mutate({
+            mutation: gqlMutation,
+            variables: {
+                "where": {
+                  "id": id
+                }
+              }
+
+        });
+        if (result.errors && result.errors.length > 0) {
+            throw fastify.httpErrors.internalServerError(
+                JSON.stringify(result.errors),
+            );
+        }
+
+        return result.data.deleteUser.users;
+
+    }catch (error) {
+        throw fastify.httpErrors.internalServerError(JSON.stringify(error));
+    }
+
 }

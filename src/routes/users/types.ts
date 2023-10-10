@@ -36,3 +36,7 @@ export const CreateUserReq = Type.Omit(UserBase, [
     'createdAt',
 ]);
 export type CreateUserReq = Static<typeof CreateUserReq>;
+
+// DELETE 
+export const DeleteUserReq = Type.Pick(UserBase, ['id']);
+export type DeleteUserReq = Static<typeof DeleteUserReq>;

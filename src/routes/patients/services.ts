@@ -1,9 +1,11 @@
 import { gql } from '@apollo/client';
 import { FastifyInstance } from 'fastify';
 
-import { type CreatePatientReq, type SearchPatientsReq } from './types';
+import { SearchTGReq, type CreatePatientReq, type SearchPatientsReq } from './types';
 import { type Patient } from './types';
 import { patientFragment } from './types';
+import { TaskGroup, taskGroupFragment} from '../taskgroups/types';
+
 
 export async function getPatients(fastify: FastifyInstance) {
     const gqlQuery = gql`
@@ -58,4 +60,27 @@ export async function searchPatients(
     });
 
     return result.data.patients;
+}
+
+export async function searchTaskGroup(
+    fastify: FastifyInstance,
+    body: SearchTGReq,
+) {
+    const gqlQuery = gql`
+       ${taskGroupFragment}
+        query ExampleQuery($id: ID) {
+            taskGroups(where: {patient:{id:$id}}) {
+                ...TASK_GROUP_FRAGMENT
+            }
+  }
+
+    `;
+
+    const result = await fastify.apolloClient.query<{ taskGroups: TaskGroup[] }>({
+        query: gqlQuery,
+        variables: {id: body.id}
+    });
+    console.log(result.data)
+
+    return result.data.taskGroups;
 }

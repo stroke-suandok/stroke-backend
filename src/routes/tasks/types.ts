@@ -51,4 +51,4 @@ export type PatchTaskReq = Static<typeof PatchTaskReq>;
 
 // DELETE tasks
 export const DeleteTaskReq = Type.Pick(Task, ['id']);
-export type DeleteTaskReq = Static<typeof SearchTaskReq>;
+export type DeleteTaskReq = Static<typeof DeleteTaskReq>;

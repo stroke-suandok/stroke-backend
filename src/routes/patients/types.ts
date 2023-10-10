@@ -44,3 +44,8 @@ export type CreatePatientReq = Static<typeof CreatePatientReq>;
 // Search patient
 export const SearchPatientsReq = Type.Pick(Patient, ['hospitalNumber']);
 export type SearchPatientsReq = Static<typeof SearchPatientsReq>;
+
+export const SearchTGReq = Type.Object({
+    id: Type.String(),
+});
+export type SearchTGReq = Static<typeof SearchTGReq>;

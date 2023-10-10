@@ -4,7 +4,7 @@ import { gql } from '../../plugins/db/client';
 import { patientFragment } from '../../routes/patients/types';
 import { getRandomDepartment, getRandomRole, getRandomTitle } from './utils';
 
-const usersData = [...Array(20).keys()].map((idx) => {
+const usersData = [...Array(5).keys()].map((idx) => {
     return {
         username: `username${idx + 1}`,
         role: getRandomRole(),
