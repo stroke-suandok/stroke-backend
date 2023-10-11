@@ -18,8 +18,8 @@ export function getNodePosition(nodes: any[], edges: any[]) {
     nodes.forEach((node) => {
         g.setNode(node.elementId, {
             label: node.title,
-            width: 400,
-            height: 50,
+            width: 768,
+            height: 176,
         });
     });
 
