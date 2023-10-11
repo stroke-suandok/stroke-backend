@@ -1,7 +1,12 @@
 import { gql } from '@apollo/client';
 import { FastifyInstance } from 'fastify';
 
-import { type DeleteUserReq, type CreateUserReq, type SearchUserReq, type UsersRes } from './types';
+import {
+    type CreateUserReq,
+    type DeleteUserReq,
+    type SearchUserReq,
+    type UsersRes,
+} from './types';
 
 export const userFragment = gql`
     fragment USER_FRAGMENT on USER {
@@ -68,7 +73,12 @@ export async function createUsers(
     try {
         const result = await fastify.apolloClient.mutate({
             mutation: gqlMutation,
-            variables: { input: body },
+            variables: {
+                input: {
+                    ...body,
+                    password: await fastify.bcrypt.hash(body.password),
+                },
+            },
         });
 
         if (result.errors && result.errors.length > 0) {
@@ -83,32 +93,32 @@ export async function createUsers(
     }
 }
 
-export async function deleteUsers(fastify:FastifyInstance, body: DeleteUserReq){
+export async function deleteUsers(
+    fastify: FastifyInstance,
+    body: DeleteUserReq,
+) {
     const gqlMutation = gql`
-      mutation Mutation($id: ID) {
-            deleteUsers(where: {id:$id}) {
+        mutation Mutation($id: ID) {
+            deleteUsers(where: { id: $id }) {
                 nodesDeleted
             }
         }
     `;
 
-    const {id} = body;
-    try{
+    const { id } = body;
+    try {
         const result = await fastify.apolloClient.mutate({
             mutation: gqlMutation,
             variables: {
-                id:id
-              }
-
+                id: id,
+            },
         });
         if (result.errors && result.errors.length > 0) {
             throw fastify.httpErrors.internalServerError(
                 JSON.stringify(result.errors),
             );
         }
-
-    }catch (error) {
+    } catch (error) {
         throw fastify.httpErrors.internalServerError(JSON.stringify(error));
     }
-
 }
