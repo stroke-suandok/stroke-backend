@@ -6,7 +6,7 @@ import { taskGroupFragment } from '../../routes/taskgroups/types';
 import { getRandomElement, getRandomEntry } from './utils';
 
 export function seedTaskgroups(patients: Patient[]) {
-    const taskGroupsData = [...Array(2).keys()].map((idx) => {
+    const taskGroupsData = [...Array(5).keys()].map((idx) => {
         const patient = getRandomElement(patients);
         return {
             entry: getRandomEntry(),
@@ -17,6 +17,27 @@ export function seedTaskgroups(patients: Patient[]) {
                 },
             },
         };
+    });
+    // Check if any patients are left without a task group
+    const patientsWithoutTaskGroups = patients.filter(
+        (patient) =>
+            !taskGroupsData.some((taskGroup) =>
+                taskGroup.patient.connect.where.node.hospitalNumber === patient.hospitalNumber
+            )
+    );
+
+    // If there are patients without a task group, create additional task groups
+    patientsWithoutTaskGroups.forEach((patient) => {
+        const additionalTaskGroup = {
+            entry: getRandomEntry(),
+            destination: `Ward ${faker.location.buildingNumber()}`,
+            patient: {
+                connect: {
+                    where: { node: { hospitalNumber: patient.hospitalNumber } },
+                },
+            },
+        };
+        taskGroupsData.push(additionalTaskGroup);
     });
 
     const gqlMutation = gql`
