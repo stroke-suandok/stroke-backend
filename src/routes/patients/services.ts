@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import { FastifyInstance } from 'fastify';
 
-import { SearchTGReq, type CreatePatientReq, type SearchPatientsReq } from './types';
+import { SearchTGReq, type CreatePatientReq, type SearchPatientsReq, DeletePatientReq } from './types';
 import { type Patient } from './types';
 import { patientFragment } from './types';
 import { TaskGroup, taskGroupFragment} from '../taskgroups/types';
@@ -83,4 +83,37 @@ export async function searchTaskGroup(
     console.log(result.data)
 
     return result.data.taskGroups;
+}
+
+export async function deletePatient(fastify:FastifyInstance, body: DeletePatientReq){
+    const gqlMutation = gql`
+   mutation DeletePatients($where: PATIENTWhere) {
+    deletePatients(where: $where) {
+    nodesDeleted
+  }
+}
+    `;
+
+    const {id} = body;
+    try{
+        const result = await fastify.apolloClient.mutate({
+            mutation: gqlMutation,
+            variables: {
+                "where": {
+                    "id": id
+                  }
+            }
+
+        });
+        if (result.errors && result.errors.length > 0) {
+            throw fastify.httpErrors.internalServerError(
+                JSON.stringify(result.errors),
+            );
+        }
+
+
+    }catch (error) {
+        throw fastify.httpErrors.internalServerError(JSON.stringify(error));
+    }
+
 }

@@ -1,7 +1,8 @@
 import { gql } from '../../plugins/db/client';
-import { BP_demo } from '../../routes/blueprints/lists';
-import { formatBlueprint } from '../../routes/blueprints/utils';
+import { formatBlueprint} from '../../routes/blueprints/utils';
 import { type TaskGroup } from '../../routes/taskgroups/types';
+import { BP_demo } from '../../routes/blueprints/lists';
+
 
 function getTaskData(taskgroups: TaskGroup[]) {
     let taskData: any = [];

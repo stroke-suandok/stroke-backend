@@ -58,8 +58,8 @@ const tasks: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
             body: DeleteTaskReq,
         },
         handler: async function (request, reply) {
-            const data = await deleteTask(server, request.body);
-            return data;
+            await deleteTask(server, request.body);
+            
         },
     });
     

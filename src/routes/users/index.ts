@@ -55,13 +55,11 @@ const users: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         method: 'DELETE',
         schema: {
             description: 'Delete a user',
-            tags: ['users'],
             body: DeleteUserReq,
         },
         url: '/',
         handler: async function (request, reply) {
-            const data = await deleteUsers(server, request.body);
-            return data;
+            await deleteUsers(server, request.body);
         },
     });
 };

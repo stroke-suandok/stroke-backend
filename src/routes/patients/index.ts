@@ -1,8 +1,8 @@
 import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import { FastifyPluginAsync } from 'fastify';
 
-import { createPatient, getPatients, searchPatients, searchTaskGroup } from './services';
-import { CreatePatientReq, GetPatientsRes, SearchPatientsReq, SearchTGReq } from './types';
+import { createPatient, deletePatient, getPatients, searchPatients, searchTaskGroup } from './services';
+import { CreatePatientReq, DeletePatientReq, GetPatientsRes, SearchPatientsReq, SearchTGReq } from './types';
 import { TaskGroups} from '../taskgroups/types';
 
 const patients: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
@@ -72,6 +72,17 @@ const patients: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         handler: async function (request, reply) {
             const data = await searchTaskGroup(server, request.body);
             return data;
+        },
+    });
+    server.route({
+        method: 'DELETE',
+        url: '/',
+        schema: {
+            body: DeletePatientReq,
+        },
+        handler: async function (request, reply) {
+            await deletePatient(server, request.body);
+            
         },
     });
 };

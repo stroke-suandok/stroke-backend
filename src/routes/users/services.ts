@@ -85,15 +85,10 @@ export async function createUsers(
 
 export async function deleteUsers(fastify:FastifyInstance, body: DeleteUserReq){
     const gqlMutation = gql`
-    ${userFragment}
-      mutation Mutation($where: USERWhere) {
-        deleteUser(where: $where) {
-        nodesDeleted
-        relationshipsDeleted
-        user{
-            ...USER_FRAGMENT
-          }
-        }
+      mutation Mutation($id: ID) {
+            deleteUsers(where: {id:$id}) {
+                nodesDeleted
+            }
         }
     `;
 
@@ -102,9 +97,7 @@ export async function deleteUsers(fastify:FastifyInstance, body: DeleteUserReq){
         const result = await fastify.apolloClient.mutate({
             mutation: gqlMutation,
             variables: {
-                "where": {
-                  "id": id
-                }
+                id:id
               }
 
         });
@@ -113,8 +106,6 @@ export async function deleteUsers(fastify:FastifyInstance, body: DeleteUserReq){
                 JSON.stringify(result.errors),
             );
         }
-
-        return result.data.deleteUser.users;
 
     }catch (error) {
         throw fastify.httpErrors.internalServerError(JSON.stringify(error));

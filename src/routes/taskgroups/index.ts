@@ -3,12 +3,14 @@ import { FastifyPluginAsync } from 'fastify';
 
 import {
     createTaskGroup,
+    deleteTaskgroup,
     getTaskGroups,
     getTaskGroupsWithDetails,
     searchTaskGroups,
 } from './services';
 import {
     CreateTaskGroupReq,
+    DeleteTaskgroupReq,
     GetTaskGroupRes,
     SearchTaskGroupsReq,
 } from './types';
@@ -72,6 +74,18 @@ const taskgroups: FastifyPluginAsync = async (fastify, opts): Promise<void> => {
         handler: async function (request, reply) {
             const data = await searchTaskGroups(server, request.body);
             return data;
+        },
+    });
+
+    server.route({
+        method: 'DELETE',
+        url: '/',
+        schema: {
+            body: DeleteTaskgroupReq,
+        },
+        handler: async function (request, reply) {
+            await deleteTaskgroup(server, request.body);
+            
         },
     });
 };

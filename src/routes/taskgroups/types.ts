@@ -44,3 +44,6 @@ export type CreateTaskGroupReq = Static<typeof CreateTaskGroupReq>;
 // Search taskgroups
 export const SearchTaskGroupsReq = Type.Pick(TaskGroup, ['id']);
 export type SearchTaskGroupsReq = Static<typeof SearchTaskGroupsReq>;
+
+export const DeleteTaskgroupReq = Type.Pick(TaskGroup, ['id']);
+export type DeleteTaskgroupReq = Static<typeof DeleteTaskgroupReq>;

@@ -192,14 +192,9 @@ export async function patchTask(fastify:FastifyInstance, body: PatchTaskReq){
 
 export async function deleteTask(fastify:FastifyInstance, body: DeleteTaskReq){
     const gqlMutation = gql`
-    ${taskFragment}
     mutation Mutation($where: TASKWhere) {
         deleteTasks(where: $where) {
           nodesDeleted
-          relationshipsDeleted
-          task{
-            ...TASK_FRAGMENT
-          }
         }
       }
     `;
@@ -221,7 +216,6 @@ export async function deleteTask(fastify:FastifyInstance, body: DeleteTaskReq){
             );
         }
 
-        return result.data.deleteTask.tasks;
 
     }catch (error) {
         throw fastify.httpErrors.internalServerError(JSON.stringify(error));

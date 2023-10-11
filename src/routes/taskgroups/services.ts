@@ -5,7 +5,7 @@ import { driver } from '../../plugins/db';
 import { gql } from '../../plugins/db/client';
 import { createBlueprint } from '../blueprints/services';
 import { createPatient, searchPatients } from '../patients/services';
-import { type CreateTaskGroupReq, type SearchTaskGroupsReq } from './types';
+import { DeleteTaskgroupReq, type CreateTaskGroupReq, type SearchTaskGroupsReq } from './types';
 import { taskGroupFragment } from './types';
 
 export async function getTaskGroups(fastify: FastifyInstance) {
@@ -196,4 +196,37 @@ export async function createTaskGroups(fastify: FastifyInstance, body: any) {
     });
 
     return result.data.taskGroups;
+}
+
+export async function deleteTaskgroup(fastify:FastifyInstance, body: DeleteTaskgroupReq){
+    const gqlMutation = gql`
+    mutation Mutation($where: TASK_GROUPWhere) {
+        deleteTaskGroups(where: $where) {
+        nodesDeleted
+    }
+}
+    `;
+
+    const {id} = body;
+    try{
+        const result = await fastify.apolloClient.mutate({
+            mutation: gqlMutation,
+            variables: {
+                "where": {
+                    "id": id
+                  }
+            }
+
+        });
+        if (result.errors && result.errors.length > 0) {
+            throw fastify.httpErrors.internalServerError(
+                JSON.stringify(result.errors),
+            );
+        }
+
+
+    }catch (error) {
+        throw fastify.httpErrors.internalServerError(JSON.stringify(error));
+    }
+
 }

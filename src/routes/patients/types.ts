@@ -49,3 +49,6 @@ export const SearchTGReq = Type.Object({
     id: Type.String(),
 });
 export type SearchTGReq = Static<typeof SearchTGReq>;
+
+export const DeletePatientReq = Type.Pick(Patient, ['id']);
+export type DeletePatientReq = Static<typeof DeletePatientReq>;
