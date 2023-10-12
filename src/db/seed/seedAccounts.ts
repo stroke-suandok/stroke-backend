@@ -4,7 +4,7 @@ import { gql } from '../../plugins/db/client';
 import { patientFragment } from '../../routes/patients/types';
 import { getRandomDepartment, getRandomRole, getRandomTitle } from './utils';
 
-const usersData = [...Array(10).keys()].map((idx) => {
+const usersData = [...Array(8).keys()].map((idx) => {
     return {
         username: `username${idx + 1}`,
         role: getRandomRole(),
@@ -19,7 +19,7 @@ usersData[0].role = 'SUPER_ADMIN';
 usersData[1].role = 'ADMIN';
 usersData[2].role = 'USER';
 
-const patientsData = [...Array(6).keys()].map((idx) => {
+const patientsData = [...Array(12).keys()].map((idx) => {
     return {
         title: getRandomTitle(),
         firstName: faker.person.firstName(),

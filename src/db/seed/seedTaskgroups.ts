@@ -6,7 +6,7 @@ import { taskGroupFragment } from '../../routes/taskgroups/types';
 import { getRandomElement, getRandomEntry } from './utils';
 
 export function seedTaskgroups(patients: Patient[]) {
-    const taskGroupsData = [...Array(5).keys()].map((idx) => {
+    const taskGroupsData = [...Array(2).keys()].map((idx) => {
         const patient = getRandomElement(patients);
         return {
             entry: getRandomEntry(),
