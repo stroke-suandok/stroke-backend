@@ -174,3 +174,89 @@ export function stroke2(): Blueprint[] {
     ];
 }
 
+export function stroke3(): Blueprint[] {
+    return [
+        {
+            id: '1',
+            parentIds: [],
+            taskType: 'ADD_PATIENT_INFO',
+            title: 'Create Patient HN',
+            isRequired: true,
+            status: 'SUCCESS',
+        },
+        {
+            id: '2',
+            parentIds: ['1'],
+            taskType: 'CHECK_TIME',
+            title: 'Meeting an ER Doctor',
+            isRequired: true,
+            status: 'PENDING',
+        },
+        {
+            id: '3',
+            parentIds: ['2'],
+            taskType: 'CHECK_TIME',
+            title: 'Start FAST process',
+            isRequired: true,
+            status: 'PENDING',
+        },
+        {
+            id: '4',
+            parentIds: ['3'],
+            taskType: 'CHECK_TIME',
+            title: 'Requesting CT Brain',
+            isRequired: true,
+            status: 'PENDING',
+        },
+        {
+            id: '5',
+            parentIds: ['4'],
+            taskType: 'CHECK_TIME',
+            title: 'Transport from ER to CT',
+            isRequired: true,
+            status: 'PENDING',
+        },
+        {
+            id: '6',
+            parentIds: ['5'],
+            taskType: 'CHECK_TIME',
+            title: 'Arrival back from CT',
+            isRequired: true,
+            status: 'PENDING',
+        },
+        {
+            id: '7',
+            parentIds: ['6','5'],
+            taskType: 'CHECK_TIME',
+            title: 'Meeting Neuro docter',
+            isRequired: true,
+            status: 'PENDING',
+        },
+        {
+            id: '8',
+            parentIds: ['7'],
+            taskType: 'CHECK_TIME',
+            title: 'Notify Set OR',
+            isRequired: true,
+            status: 'PENDING',
+        },
+        {
+            id: '9',
+            parentIds: ['8'],
+            taskType: 'CHECK_TIME',
+            title: 'OR Arrival',
+            isRequired: true,
+            status: 'PENDING',
+        },
+        {
+            id: '10',
+            parentIds: ['9'],
+            taskType: 'CHECK_TIME',
+            title: 'Start Operation',
+            isRequired: true,
+            status: 'PENDING',
+        }
+    ];
+}
+
+

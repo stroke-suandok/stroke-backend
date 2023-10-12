@@ -1,7 +1,7 @@
 import { gql } from '../../plugins/db/client';
 import { formatBlueprint} from '../../routes/blueprints/utils';
 import { type TaskGroup } from '../../routes/taskgroups/types';
-import { BP_demo, stroke1, stroke2 } from '../../routes/blueprints/lists';
+import { stroke1, stroke2, stroke3 } from '../../routes/blueprints/lists';
 
 
 function getTaskData(taskgroups: TaskGroup[]) {
@@ -9,7 +9,7 @@ function getTaskData(taskgroups: TaskGroup[]) {
 
     taskgroups.forEach((tg) => {
         // Define an array of blueprint functions
-        const blueprintFunctions = [BP_demo, stroke1, stroke2];
+        const blueprintFunctions = [stroke1, stroke2, stroke3];
 
         // Choose a random blueprint function from the array
         const randomBlueprintFunction = blueprintFunctions[Math.floor(Math.random() * blueprintFunctions.length)];
