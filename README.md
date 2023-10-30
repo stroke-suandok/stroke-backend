@@ -74,8 +74,9 @@
    yarn
    ```
 3. Database setup
-   ```sh
+   ```
    Copy .env.example to .env
+
    docker-compose up -d
    ```
 4. Database seeding
