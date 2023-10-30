@@ -18,7 +18,9 @@
     <br />
     <br />
     <a href="https://fsd-ertrack.cpe.eng.cmu.ac.th/">View Demo</a>
-    ·
+    <p align="center"> Use this account for login to demo website
+    <p align="center"> Username: username5
+    <p align="center"> Password: 1234
   </p>
 </div>
 
