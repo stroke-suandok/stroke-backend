@@ -16,8 +16,6 @@
   <p align="center">
     Tracking application for the ER stroke process
     <br />
-    <a href="https://github.com/phurin2644/front-test.git"><strong>Explore the docs »</strong></a>
-    <br />
     <br />
     <a href="https://fsd-ertrack.cpe.eng.cmu.ac.th/">View Demo</a>
     ·
