@@ -11,7 +11,7 @@
     <img src="./src/img/icon.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Fullstack ER-tracking</h3>
+  <h3 align="center">Fullstack ER-tracking-Back-end</h3>
 
   <p align="center">
     Tracking application for the ER stroke process
